@@ -32,3 +32,34 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 
     utils.SuccessResponse(c, http.StatusCreated, "User berhasil dibuat", user)
 }
+
+
+func (ctrl *UserController) GetUserByID(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusBadRequest, "ID harus angka")
+		return
+	}
+
+	user, err := ctrl.service.GetUserByID(uint(id))
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			utils.ErrorResponse(c, http.StatusNotFound, "User tidak ditemukan")
+		} else {
+			utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mengambil user")
+		}
+		return
+	}
+
+	utils.SuccessResponse(c, http.StatusOK, "OK", user)
+}
+
+func (ctrl *UserController) GetAllUsers(c *gin.Context) {
+	users, err := ctrl.service.GetAllUsers()
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mengambil data")
+		return
+	}
+	utils.SuccessResponse(c, http.StatusOK, "OK", users) // akan kembali array JSON
+}
