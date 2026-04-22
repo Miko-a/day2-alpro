@@ -10,7 +10,7 @@ func RegisterUserRoutes(r *gin.RouterGroup, ctrl *controller.UserController, jwt
     users := r.Group("/users")
     {
         users.POST("", ctrl.CreateUser)
-        users.GET("/:id", ctrl.GetUserByID) //ahwbdaidg
-        users.GET("",     ctrl.GetAllUsers)
+        users.GET("/:id", ctrl.GetUserByID) // Chall A
+        users.GET("",     ctrl.GetAllUsers) // Chall B
     }
 }
