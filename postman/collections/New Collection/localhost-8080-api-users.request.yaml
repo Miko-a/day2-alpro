@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $kind: http-request
 name: localhost:8080/api/users
 url: localhost:8080/api/users
@@ -14,3 +15,21 @@ body:
 
     }"
 order: 1776334542094
+=======
+$kind: http-request
+name: localhost:8080/api/users
+url: localhost:8080/api/users
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"John Doe\",\r
+
+    \  \"email\": \"johndoe@gmail.com\"\r
+
+    \  \"password\": \"12345\"\r
+
+    }"
+order: 1776334542094
+>>>>>>> origin/main
