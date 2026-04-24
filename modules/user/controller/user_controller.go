@@ -1,42 +1,44 @@
-<<<<<<< HEAD
 package controller
 
 import (
-    "net/http"
+	"errors"
+	"net/http"
+	"strconv"
 
-    "github.com/gin-gonic/gin"
-    "github.com/Mobilizes/materi-be-alpro/modules/user/service"
-    "github.com/Mobilizes/materi-be-alpro/modules/user/validation"
-    "github.com/Mobilizes/materi-be-alpro/pkg/utils"
+	"github.com/gin-gonic/gin"
+	"github.com/Mobilizes/materi-be-alpro/modules/user/service"
+	"github.com/Mobilizes/materi-be-alpro/modules/user/validation"
+	"github.com/Mobilizes/materi-be-alpro/pkg/utils"
+	"gorm.io/gorm"
 )
 
 type UserController struct {
-    service *service.UserService
+	service *service.UserService
 }
 
 func NewUserController(service *service.UserService) *UserController {
-    return &UserController{service: service}
+	return &UserController{service: service}
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {
-    req, err := validation.ValidateCreateUser(c)
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusBadRequest, err.Error())
-        return
-    }
+	req, err := validation.ValidateCreateUser(c)
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
 
-    user, err := ctrl.service.CreateUser(req)
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal membuat user")
-        return
-    }
+	user, err := ctrl.service.CreateUser(req)
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal membuat user")
+		return
+	}
 
-    utils.SuccessResponse(c, http.StatusCreated, "User berhasil dibuat", user)
+	utils.SuccessResponse(c, http.StatusCreated, "User berhasil dibuat", user)
 }
-
 
 func (ctrl *UserController) GetUserByID(c *gin.Context) {
 	idParam := c.Param("id")
+
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil {
 		utils.ErrorResponse(c, http.StatusBadRequest, "ID harus angka")
@@ -62,41 +64,6 @@ func (ctrl *UserController) GetAllUsers(c *gin.Context) {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mengambil data")
 		return
 	}
-	utils.SuccessResponse(c, http.StatusOK, "OK", users) // akan kembali array JSON
+
+	utils.SuccessResponse(c, http.StatusOK, "OK", users)
 }
-=======
-package controller
-
-import (
-    "net/http"
-
-    "github.com/gin-gonic/gin"
-    "github.com/Mobilizes/materi-be-alpro/modules/user/service"
-    "github.com/Mobilizes/materi-be-alpro/modules/user/validation"
-    "github.com/Mobilizes/materi-be-alpro/pkg/utils"
-)
-
-type UserController struct {
-    service *service.UserService
-}
-
-func NewUserController(service *service.UserService) *UserController {
-    return &UserController{service: service}
-}
-
-func (ctrl *UserController) CreateUser(c *gin.Context) {
-    req, err := validation.ValidateCreateUser(c)
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusBadRequest, err.Error())
-        return
-    }
-
-    user, err := ctrl.service.CreateUser(req)
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal membuat user")
-        return
-    }
-
-    utils.SuccessResponse(c, http.StatusCreated, "User berhasil dibuat", user)
-}
->>>>>>> origin/main
